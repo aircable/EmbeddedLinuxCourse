@@ -1,0 +1,25 @@
+
+
+process
+
+PID=6587
+        2^64 -1
++------+                             \
+|      |   #include <stdio.h>         \
+|      |   int main() {                \            conversion of virtual
+|      |      while(1);                 \            to physical address
+|      |	 }                             \            is expensive              Phy. RAM 12GB
+|      |                                  ------------------------------------- +-------+ 
++------+                            ------------------------------------------- |       | 
+        0                                                                       |       |
+                                                   +----------------------+     |       |
+PID=9128                                           |virtual | phy page    |     |       |
+        2^64 -1                                    |address   offst + addr|     |       |
++------+                                           +----------------------+     +-------+
+|      |   #include <stdio.h>                      TLB cache
+|      |   int main() {                                - hit when entry is present
+|      |      printf("Hello World");                   - miss when absent
+|      |	 }                                           - hit ratio is      
+|      |                                                  hit/(hit+miss)
++------+
+        0

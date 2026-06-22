@@ -1,0 +1,8 @@
+label: dos
+label-id: 0x034aa078
+device: /dev/sdb
+unit: sectors
+sector-size: 512
+
+/dev/sdb1 : start=        8192, size=      524288, type=c
+/dev/sdb2 : start=      532480, size=     8044544, type=83

@@ -1,0 +1,56 @@
+Chapter 2:
+1.Setup toolchain for your target
+example 2 for rpi4,
+example 2a for rpi3B+,  or
+example 2b for rpi3B
+in the zip file.
+
+2.Compile hello.c or the hello.cpp – for the target.
+We will test/run on target next week.
+
+Chapter 3:
+1. Setup buildroot for your target
+
+example 1
+then use
+example 2 for rpi4,
+example 2a for rpi3B+,  or
+example 2b for rpi3B
+in the zip file.
+
+    Copy over to an SD card the buildroot build.
+    Boot using this SD card.
+    Submit output of "uname -a".  
+
+2. Setup Yocto Project for your target
+
+example 3
+then use
+example 4 for rpi4,
+example 4a for rpi3B+,  or
+example 4b for rpi3B
+in the zip file.
+
+    Copy over to an SD card the image from yocto build.
+    Boot using this SD card.
+    Submit output of "uname -a".  
+
+We need to test these images.
+
+Chapter 4:
+1. Copy over to an SD card the buildroot build from Chapter 3.
+    Boot using this SD card.
+    Connect with TTL cable and submit screenshot.
+
+2. Copy over to another SD card the yocto build from Chapter 3.
+    Boot using this SD card.
+    Connect with TTL cable and submit screenshot.
+
+Chapter 5:
+Module Programming and proc entry
+
+Chapter 6:
+1.Create a simple char driver.
+
+2.Show the sysfs entry created for it.
+

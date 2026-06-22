@@ -1,0 +1,1 @@
+dmesg is used to examine or control the kernel ring buffer.

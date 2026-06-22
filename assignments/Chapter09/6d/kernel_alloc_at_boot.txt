@@ -1,0 +1,16 @@
+on author's device
+this trace is taken from a 32-bit Arm device (a BeagleBone Black):
+--
+Memory: 511MB = 511MB total
+Memory: 505980k/505980k available, 18308k reserved, 0K highmem
+Virtual kernel memory layout:
+vector : 0xffff0000 - 0xffff1000 ( 4 kB)
+fixmap : 0xfff00000 - 0xfffe0000 ( 896 kB)
+vmalloc : 0xe0800000 - 0xff000000 ( 488 MB)
+lowmem : 0xc0000000 - 0xe0000000 ( 512 MB)
+pkmap : 0xbfe00000 - 0xc0000000 ( 2 MB)
+modules : 0xbf800000 - 0xbfe00000 ( 6 MB)
+.text : 0xc0008000 - 0xc0763c90 (7536 kB)
+.init : 0xc0764000 - 0xc079f700 ( 238 kB)
+.data : 0xc07a0000 - 0xc0827240 ( 541 kB)
+.bss : 0xc0827240 - 0xc089e940 ( 478 kB)

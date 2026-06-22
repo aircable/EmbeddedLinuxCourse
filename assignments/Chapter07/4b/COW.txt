@@ -1,0 +1,57 @@
+Copy On Write
+
+fork() feature/optimization:
+|
+|------- parent .. all pages are marked readonly
+|
+|------- child  .. receives a full mapping of the parent pages
+
+this continues, till either parent/child need to modify an address location.
+
+when modification is needed, in either parent or child.
+- it generates a memory page fault
+- in response to the memory page fault.
+  the child receives a local copy of the page.
+  and readonly attribute on the specific memory page is removed.
+- now either parent/child can make the modification to their local copy of address.
+
+
+Summary:
+- fork() uses a feature called COW.
+- main use case is for the Shell Command Line .. to run command-line shell commands.
+
+Details:
+
++------------+
+|            |
+| process    |
+|            |
++------------+
+process has it own range of linear addresses (0- 2^^64 -1)
+mapping to physical address (0-16GB)
+
+||
+VV
+
+fork()
+
+||
+VV
+
++------------+
+| parent     |
+| process    |
+|            |
++------------+
+process has it own range of linear addresses (0- 2^^64 -1)
+mapping to physical address (0-16GB)
+
+and
+
++------------+
+| child      |
+| process    |
+|            |
++------------+
+process has it own range of linear addresses (0- 2^^64 -1)
+mapping to same physical address (0-16GB) as parent

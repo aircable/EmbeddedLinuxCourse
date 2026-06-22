@@ -1,0 +1,13 @@
+The following mutex types are supported:
+PTHREAD_MUTEX_TIMED_NP - for ‘‘fast’’ mutexes.
+PTHREAD_MUTEX_RECURSIVE_NP - for ‘‘recursive’’ mutexes.
+PTHREAD_MUTEX_ERRORCHECK_NP - for ‘‘error checking’’ mutexes.
+
+If the mutex is of the “normal” or "timed" type, the calling thread is suspended until the mutex is unlocked, thus effectively causing the calling thread to block. 
+
+If the mutex is of the ‘‘recursive’’ type, pthread_mutex_lock succeeds and returns immediately, recording the number of times the calling thread has locked the mutex.
+
+If the mutex is of the ‘‘error checking’’ type, pthread_mutex_lock returns immediately with the error code EDEADLK. 
+
+NP suffix indicates Non-Portable Extension to POSIX
+

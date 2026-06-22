@@ -1,0 +1,24 @@
+
+
+PID=6587      PID=7890      PID=12312     PID=3241       PID=5879 
++---------+		+---------+   +---------+   +---------+    +---------+
+|         |   |         |   |         |   |         |    |         |    
++---------+		+---------+   +---------+   +---------+    +---------+
+
+---------------------------------------------------------------------
+
+
+
+1.  every task has some % available on core. (say default = 150 ms)
+    as the task is finishing its timeslice
+    it jumps into kernel mode, and on the jump to the kernel mode
+    invokes scheduler calls
+
+process scheduler
+• invoked from external interfaces
+  system calls from user space, and
+  kernel calls from kernel space.
+• invoked on scheduler tick
+  called directly from system calls such as sleep, or
+  called indirectly after every system call or
+  called after every slow interrupt.

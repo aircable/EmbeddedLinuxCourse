@@ -1,0 +1,14 @@
+dmesg is used to examine or control the kernel ring buffer. 
+The default action is to display all 
+messages from the kernel ring buffer.
+
+https://www.ibm.com/developerworks/linux/library/l-kernel-logging-apis/index.html
+
+cat /proc/sys/kernel/printk
+4   4   1   7
+
+These log levels represent the 
+- console log level, 
+- default message log level, 
+- minimum console log level, and 
+- default console log level. 

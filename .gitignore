@@ -1,0 +1,17 @@
+tools/
+
+# Old/outdated content
+OLD/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+.venv/
+__pycache__/
+
+# tools
+*.py
+# Large binary files we don't need to track
+# (keep PPTX in git — they are the deliverables)

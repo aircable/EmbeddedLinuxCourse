@@ -1,0 +1,2 @@
+all:
+	more README.txt

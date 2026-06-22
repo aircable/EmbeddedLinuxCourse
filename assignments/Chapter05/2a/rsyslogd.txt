@@ -1,0 +1,34 @@
+https://forum.linuxconfig.org/t/fedora-missing-etc-syslog-conf-a-syslog-configuration-file/1011
+--
+Fedora Linux does not include syslog with a default installation. You are more likely to have rsyslog installed on your system with /etc/rsyslog.conf as a configuration file. To confirm this run a rpm command to list all installed packages and pipe output to grep to search for syslog:
+
+$ rpm -qa | grep syslog
+Once you have learned what version of syslog you have installed on your Linux system list all files contained in that package to search for configuration file:
+
+$ rpm -ql packagename | grep '\.conf'
+So, if you have rsyslog package installed, use the following command to search for configuration file:
+
+$ rpm -ql rsyslog | grep '\.conf'
+/etc/rsyslog.conf
+/usr/share/man/man5/rsyslog.conf.5.gz
+
+
+---
+# service rsyslog start
+Redirecting to /bin/systemctl start rsyslog.service
+# service rsyslog status
+Redirecting to /bin/systemctl status rsyslog.service
+---
+change following line 
+*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+to
+*.alert;mail.none;authpriv.none;cron.none                /var/log/messages
+--
+otherwise it is excruciatingly painful.
+---
+https://www.rsyslog.com/doc/v8-stable/configuration/properties.html
+https://tp69.blog/2019/01/01/suppressing-messages-in-var-log-syslog/
+---
+# service rsyslog stop
+# service rsyslog start
+# service rsyslog status

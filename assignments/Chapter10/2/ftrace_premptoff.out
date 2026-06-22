@@ -1,0 +1,429 @@
+# tracer: wakeup
+#
+# wakeup latency trace v1.1.5 on 5.14.9-300.fc35.x86_64
+# --------------------------------------------------------------------
+# latency: 285 us, #382/382, CPU#0 | (M:desktop VP:0, KP:0, SP:0 HP:0 #P:4)
+#    -----------------
+#    | task: kworker/0:1H-118 (uid:0 nice:-20 policy:0 rt_prio:0)
+#    -----------------
+#
+#                    _------=> CPU#            
+#                   / _-----=> irqs-off        
+#                  | / _----=> need-resched    
+#                  || / _---=> hardirq/softirq 
+#                  ||| / _--=> preempt-depth   
+#                  |||| /     delay            
+#  cmd     pid     ||||| time  |   caller      
+#     \   /        |||||  \    |   /         
+  <idle>-0         0dNs.    0us+:        0:120:R   + [000]     118:100:R kworker/0:1H
+  <idle>-0         0dNs.   39us : <stack trace>
+ => __ftrace_trace_stack
+ => probe_wakeup
+ => ttwu_do_wakeup
+ => try_to_wake_up
+ => __queue_work
+ => mod_delayed_work_on
+ => kblockd_mod_delayed_work_on
+ => __blk_mq_free_request
+ => blk_flush_complete_seq
+ => flush_end_io
+ => scsi_end_request
+ => scsi_io_completion
+ => blk_complete_reqs
+ => __do_softirq
+ => __irq_exit_rcu
+ => common_interrupt
+ => asm_common_interrupt
+ => cpuidle_enter_state
+ => cpuidle_enter
+ => do_idle
+ => cpu_startup_entry
+ => start_kernel
+ => secondary_startup_64_no_verify
+  <idle>-0         0dNs.   39us : 0
+  <idle>-0         0dNs.   40us : raw_spin_rq_unlock <-try_to_wake_up
+  <idle>-0         0dNs.   40us : _raw_spin_unlock_irqrestore <-try_to_wake_up
+  <idle>-0         0dNs.   40us : rcu_read_unlock_strict <-mod_delayed_work_on
+  <idle>-0         0dNs.   41us : blk_queue_exit <-blk_flush_complete_seq
+  <idle>-0         0dNs.   41us : rcu_read_unlock_strict <-blk_flush_complete_seq
+  <idle>-0         0dNs.   42us : _raw_spin_unlock_irqrestore <-scsi_end_request
+  <idle>-0         0dNs.   43us : irq_enter_rcu <-sysvec_apic_timer_interrupt
+  <idle>-0         0dNH.   43us : irqtime_account_irq <-sysvec_apic_timer_interrupt
+  <idle>-0         0dNH.   43us : __sysvec_apic_timer_interrupt <-sysvec_apic_timer_interrupt
+  <idle>-0         0dNH.   44us : hrtimer_interrupt <-__sysvec_apic_timer_interrupt
+  <idle>-0         0dNH.   44us : _raw_spin_lock_irqsave <-hrtimer_interrupt
+  <idle>-0         0dNH.   45us : ktime_get_update_offsets_now <-hrtimer_interrupt
+  <idle>-0         0dNH.   45us : __hrtimer_run_queues <-hrtimer_interrupt
+  <idle>-0         0dNH.   46us : _raw_spin_unlock_irqrestore <-__hrtimer_run_queues
+  <idle>-0         0dNH.   47us : tick_sched_timer <-__hrtimer_run_queues
+  <idle>-0         0dNH.   47us : ktime_get <-tick_sched_timer
+  <idle>-0         0dNH.   47us : tick_sched_do_timer <-tick_sched_timer
+  <idle>-0         0dNH.   48us : tick_do_update_jiffies64 <-tick_sched_do_timer
+  <idle>-0         0dNH.   48us : _raw_spin_lock <-tick_do_update_jiffies64
+  <idle>-0         0dNH.   48us : calc_global_load <-tick_do_update_jiffies64
+  <idle>-0         0dNH.   49us : update_wall_time <-tick_sched_do_timer
+  <idle>-0         0dNH.   50us : timekeeping_advance <-tick_sched_do_timer
+  <idle>-0         0dNH.   50us : _raw_spin_lock_irqsave <-timekeeping_advance
+  <idle>-0         0dNH.   50us : ntp_tick_length <-timekeeping_advance
+  <idle>-0         0dNH.   51us : ntp_tick_length <-timekeeping_advance
+  <idle>-0         0dNH.   51us : timekeeping_update <-timekeeping_advance
+  <idle>-0         0dNH.   52us : ntp_get_next_leap <-timekeeping_update
+  <idle>-0         0dNH.   53us : update_vsyscall <-timekeeping_update
+  <idle>-0         0dNH.   53us : raw_notifier_call_chain <-timekeeping_update
+  <idle>-0         0dNH.   54us : pvclock_gtod_notify <-raw_notifier_call_chain
+  <idle>-0         0dNH.   54us : update_fast_timekeeper <-timekeeping_update
+  <idle>-0         0dNH.   55us : update_fast_timekeeper <-timekeeping_update
+  <idle>-0         0dNH.   55us : _raw_spin_unlock_irqrestore <-timekeeping_advance
+  <idle>-0         0dNH.   56us : tick_sched_handle <-tick_sched_timer
+  <idle>-0         0dNH.   56us : update_process_times <-tick_sched_handle
+  <idle>-0         0dNH.   56us : account_process_tick <-update_process_times
+  <idle>-0         0dNH.   57us : irqtime_account_process_tick <-update_process_times
+  <idle>-0         0dNH.   57us : hrtimer_run_queues <-update_process_times
+  <idle>-0         0dNH.   58us : rcu_sched_clock_irq <-update_process_times
+  <idle>-0         0dNH.   58us : rcu_is_cpu_rrupt_from_idle <-rcu_sched_clock_irq
+  <idle>-0         0dNH.   59us : rcu_is_cpu_rrupt_from_idle <-rcu_sched_clock_irq
+  <idle>-0         0dNH.   59us : rcu_segcblist_ready_cbs <-rcu_sched_clock_irq
+  <idle>-0         0dNH.   59us : scheduler_tick <-update_process_times
+  <idle>-0         0dNH.   60us : arch_scale_freq_tick <-scheduler_tick
+  <idle>-0         0dNH.   60us : raw_spin_rq_lock_nested <-scheduler_tick
+  <idle>-0         0dNH.   61us : _raw_spin_lock <-raw_spin_rq_lock_nested
+  <idle>-0         0dNH.   61us : update_rq_clock <-scheduler_tick
+  <idle>-0         0dNH.   61us : update_irq_load_avg <-update_rq_clock
+  <idle>-0         0dNH.   62us : task_tick_idle <-scheduler_tick
+  <idle>-0         0dNH.   62us : calc_global_load_tick <-scheduler_tick
+  <idle>-0         0dNH.   63us : raw_spin_rq_unlock <-scheduler_tick
+  <idle>-0         0dNH.   63us : trigger_load_balance <-update_process_times
+  <idle>-0         0dNH.   64us : raise_softirq <-trigger_load_balance
+  <idle>-0         0dNH.   64us : nohz_balance_exit_idle <-trigger_load_balance
+  <idle>-0         0dNH.   65us : rcu_read_unlock_strict <-trigger_load_balance
+  <idle>-0         0dNH.   66us : housekeeping_cpumask <-trigger_load_balance
+  <idle>-0         0dNH.   66us : idle_cpu <-trigger_load_balance
+  <idle>-0         0dNH.   67us : smp_call_function_single_async <-update_process_times
+  <idle>-0         0dNH.   67us : generic_exec_single <-smp_call_function_single_async
+  <idle>-0         0dNH.   68us : send_call_function_single_ipi <-generic_exec_single
+  <idle>-0         0dNH.   69us : run_posix_cpu_timers <-tick_sched_handle
+  <idle>-0         0dNH.   70us : profile_tick <-tick_sched_timer
+  <idle>-0         0dNH.   71us : hrtimer_forward <-tick_sched_timer
+  <idle>-0         0dNH.   72us : _raw_spin_lock_irq <-__hrtimer_run_queues
+  <idle>-0         0dNH.   72us : enqueue_hrtimer <-__hrtimer_run_queues
+  <idle>-0         0dNH.   74us : __hrtimer_next_event_base <-hrtimer_interrupt
+  <idle>-0         0dNH.   75us : __hrtimer_next_event_base <-hrtimer_interrupt
+  <idle>-0         0dNH.   76us : _raw_spin_unlock_irqrestore <-hrtimer_interrupt
+  <idle>-0         0dNH.   77us : tick_program_event <-hrtimer_interrupt
+  <idle>-0         0dNH.   78us : clockevents_program_event <-hrtimer_interrupt
+  <idle>-0         0dNH.   79us : ktime_get <-clockevents_program_event
+  <idle>-0         0dNH.   81us : lapic_next_deadline <-clockevents_program_event
+  <idle>-0         0dNH.   82us : irq_exit_rcu <-sysvec_apic_timer_interrupt
+  <idle>-0         0dNH.   82us : irqtime_account_irq <-__irq_exit_rcu
+  <idle>-0         0dNs.   84us : idle_cpu <-__irq_exit_rcu
+  <idle>-0         0.Ns.   86us : scsi_run_queue_async <-scsi_end_request
+  <idle>-0         0.Ns.   86us : rcu_read_unlock_strict <-scsi_end_request
+  <idle>-0         0dNs.   88us : wake_up_process <-__do_softirq
+  <idle>-0         0dNs.   89us : try_to_wake_up <-__do_softirq
+  <idle>-0         0dNs.   90us : _raw_spin_lock_irqsave <-try_to_wake_up
+  <idle>-0         0dNs.   91us : kthread_is_per_cpu <-is_cpu_allowed
+  <idle>-0         0dNs.   92us : ttwu_queue_wakelist <-try_to_wake_up
+  <idle>-0         0dNs.   94us : raw_spin_rq_lock_nested <-try_to_wake_up
+  <idle>-0         0dNs.   94us : _raw_spin_lock <-raw_spin_rq_lock_nested
+  <idle>-0         0dNs.   95us : update_rq_clock <-try_to_wake_up
+  <idle>-0         0dNs.   96us : update_irq_load_avg <-update_rq_clock
+  <idle>-0         0dNs.   96us : ttwu_do_activate <-try_to_wake_up
+  <idle>-0         0dNs.   97us : psi_task_change <-enqueue_task
+  <idle>-0         0dNs.   98us : psi_flags_change <-psi_task_change
+  <idle>-0         0dNs.   99us : psi_group_change <-enqueue_task
+  <idle>-0         0dNs.  101us : enqueue_task_fair <-enqueue_task
+  <idle>-0         0dNs.  102us : enqueue_entity <-enqueue_task_fair
+  <idle>-0         0dNs.  104us : update_curr <-enqueue_entity
+  <idle>-0         0dNs.  104us : __update_load_avg_se <-update_load_avg
+  <idle>-0         0dNs.  105us : __update_load_avg_cfs_rq <-update_load_avg
+  <idle>-0         0dNs.  106us : update_cfs_group <-enqueue_entity
+  <idle>-0         0dNs.  107us : hrtick_update <-enqueue_task
+  <idle>-0         0dNs.  108us : ttwu_do_wakeup <-try_to_wake_up
+  <idle>-0         0dNs.  108us : check_preempt_curr <-ttwu_do_wakeup
+  <idle>-0         0dNs.  109us : resched_curr <-check_preempt_curr
+  <idle>-0         0dNs.  111us : raw_spin_rq_unlock <-try_to_wake_up
+  <idle>-0         0dNs.  111us : _raw_spin_unlock_irqrestore <-try_to_wake_up
+  <idle>-0         0dNs.  112us : irqtime_account_irq <-__do_softirq
+  <idle>-0         0dN..  113us : idle_cpu <-__irq_exit_rcu
+  <idle>-0         0.N..  114us : cpuidle_reflect <-do_idle
+  <idle>-0         0.N..  115us : menu_reflect <-do_idle
+  <idle>-0         0.N..  116us : tick_nohz_idle_got_tick <-menu_reflect
+  <idle>-0         0.N..  117us : arch_cpu_idle_exit <-do_idle
+  <idle>-0         0.N..  118us : tick_nohz_idle_exit <-do_idle
+  <idle>-0         0.N..  119us : flush_smp_call_function_from_idle <-do_idle
+  <idle>-0         0.N..  120us : schedule_idle <-do_idle
+  <idle>-0         0dN..  121us : rcu_note_context_switch <-__schedule
+  <idle>-0         0dN..  121us : rcu_qs <-rcu_note_context_switch
+  <idle>-0         0dN..  122us : raw_spin_rq_lock_nested <-__schedule
+  <idle>-0         0dN..  122us : _raw_spin_lock <-raw_spin_rq_lock_nested
+  <idle>-0         0dN..  123us : update_rq_clock <-__schedule
+  <idle>-0         0dN..  124us : pick_next_task_fair <-__schedule
+  <idle>-0         0dN..  126us : put_prev_task_idle <-pick_next_task_fair
+  <idle>-0         0dN..  126us : pick_next_entity <-pick_next_task_fair
+  <idle>-0         0dN..  127us : set_next_entity <-pick_next_task_fair
+  <idle>-0         0dN..  127us : clear_buddies <-set_next_entity
+  <idle>-0         0dN..  129us : __update_load_avg_se <-update_load_avg
+  <idle>-0         0dN..  129us : __update_load_avg_cfs_rq <-update_load_avg
+  <idle>-0         0d...  130us : psi_task_switch <-__schedule
+  <idle>-0         0d...  131us : psi_flags_change <-psi_task_switch
+  <idle>-0         0d...  132us : iterate_groups <-psi_task_switch
+  <idle>-0         0d...  132us : psi_group_change <-psi_task_switch
+  <idle>-0         0d...  134us : iterate_groups <-psi_task_switch
+  <idle>-0         0d...  135us : enter_lazy_tlb <-__schedule
+kworker/-483592    0d...  137us : finish_task_switch.isra.0 <-__schedule
+kworker/-483592    0d...  138us : raw_spin_rq_unlock <-finish_task_switch.isra.0
+kworker/-483592    0....  139us : wq_worker_running <-worker_thread
+kworker/-483592    0....  139us : kthread_data <-wq_worker_running
+kworker/-483592    0....  141us : _raw_spin_lock_irq <-worker_thread
+kworker/-483592    0d...  142us : process_one_work <-worker_thread
+kworker/-483592    0....  144us : dm_wq_work <-process_one_work
+kworker/-483592    0....  145us : _raw_spin_lock_irq <-dm_wq_work
+kworker/-483592    0....  146us : submit_bio_noacct <-dm_wq_work
+kworker/-483592    0....  147us : submit_bio_checks <-submit_bio_noacct
+kworker/-483592    0....  147us : __cond_resched <-submit_bio_checks
+kworker/-483592    0....  148us : rcu_all_qs <-__cond_resched
+kworker/-483592    0....  149us : should_fail_bio <-submit_bio_checks
+kworker/-483592    0....  150us : bdev_read_only <-submit_bio_checks
+kworker/-483592    0....  151us : blk_throtl_bio <-submit_bio_checks
+kworker/-483592    0....  152us : rcu_read_unlock_strict <-blk_throtl_bio
+kworker/-483592    0....  154us : blk_cgroup_bio_start <-submit_bio_checks
+kworker/-483592    0....  154us : cgroup_rstat_updated <-blk_cgroup_bio_start
+kworker/-483592    0....  155us : ktime_get <-submit_bio_checks
+kworker/-483592    0....  157us : blk_queue_enter <-submit_bio_noacct
+kworker/-483592    0....  158us : rcu_read_unlock_strict <-blk_queue_enter
+kworker/-483592    0....  158us : rcu_read_unlock_strict <-blk_queue_enter
+kworker/-483592    0....  159us : dm_submit_bio <-submit_bio_noacct
+kworker/-483592    0....  160us : __srcu_read_lock <-dm_submit_bio
+kworker/-483592    0....  161us : bio_alloc_bioset <-dm_submit_bio
+kworker/-483592    0....  161us : mempool_alloc <-bio_alloc_bioset
+kworker/-483592    0....  162us : __cond_resched <-mempool_alloc
+kworker/-483592    0....  163us : rcu_all_qs <-__cond_resched
+kworker/-483592    0....  164us : mempool_alloc_slab <-mempool_alloc
+kworker/-483592    0....  165us : kmem_cache_alloc <-mempool_alloc
+kworker/-483592    0....  166us : should_failslab <-kmem_cache_alloc
+kworker/-483592    0....  167us : bio_start_io_acct <-dm_submit_bio
+kworker/-483592    0....  167us : __part_start_io_acct <-dm_submit_bio
+kworker/-483592    0....  168us : update_io_ticks <-__part_start_io_acct
+kworker/-483592    0....  170us : __split_and_process_non_flush <-dm_submit_bio
+kworker/-483592    0....  171us : dm_table_find_target <-__split_and_process_non_flush
+kworker/-483592    0....  172us : max_io_len <-__split_and_process_non_flush
+kworker/-483592    0....  173us : __bio_clone_fast <-__split_and_process_non_flush
+kworker/-483592    0....  174us : bio_clone_blkg_association <-__bio_clone_fast
+kworker/-483592    0....  175us : rcu_read_unlock_strict <-bio_clone_blkg_association
+kworker/-483592    0....  175us : ktime_get <-__bio_clone_fast
+kworker/-483592    0....  176us : bio_advance <-__split_and_process_non_flush
+kworker/-483592    0....  176us : __map_bio.isra.0 <-__split_and_process_non_flush
+kworker/-483592    0....  177us : linear_map <-__map_bio.isra.0
+kworker/-483592    0....  178us : bio_associate_blkg <-linear_map
+kworker/-483592    0....  179us : bio_associate_blkg_from_css <-bio_associate_blkg
+kworker/-483592    0....  179us : rcu_read_unlock_strict <-bio_associate_blkg_from_css
+kworker/-483592    0....  180us : rcu_read_unlock_strict <-bio_associate_blkg_from_css
+kworker/-483592    0....  181us : rcu_read_unlock_strict <-linear_map
+kworker/-483592    0....  181us : submit_bio_noacct <-__split_and_process_non_flush
+kworker/-483592    0....  182us : submit_bio_checks <-submit_bio_noacct
+kworker/-483592    0....  182us : __cond_resched <-submit_bio_checks
+kworker/-483592    0....  182us : rcu_all_qs <-__cond_resched
+kworker/-483592    0....  183us : should_fail_bio <-submit_bio_checks
+kworker/-483592    0....  183us : bdev_read_only <-submit_bio_checks
+kworker/-483592    0....  184us : blk_throtl_bio <-submit_bio_checks
+kworker/-483592    0....  185us : rcu_read_unlock_strict <-blk_throtl_bio
+kworker/-483592    0....  185us : blk_cgroup_bio_start <-submit_bio_checks
+kworker/-483592    0....  186us : cgroup_rstat_updated <-blk_cgroup_bio_start
+kworker/-483592    0....  186us : ktime_get <-submit_bio_checks
+kworker/-483592    0....  187us : errno_to_blk_status <-dm_submit_bio
+kworker/-483592    0....  187us : dm_io_dec_pending <-dm_submit_bio
+kworker/-483592    0....  188us : __srcu_read_unlock <-dm_submit_bio
+kworker/-483592    0....  188us : rcu_read_unlock_strict <-submit_bio_noacct
+kworker/-483592    0....  188us : blk_queue_enter <-submit_bio_noacct
+kworker/-483592    0....  189us : rcu_read_unlock_strict <-blk_queue_enter
+kworker/-483592    0....  189us : rcu_read_unlock_strict <-blk_queue_enter
+kworker/-483592    0....  190us : blk_mq_submit_bio <-submit_bio_noacct
+kworker/-483592    0....  190us : __blk_queue_split <-blk_mq_submit_bio
+kworker/-483592    0....  191us : bio_integrity_prep <-blk_mq_submit_bio
+kworker/-483592    0....  191us : __rq_qos_throttle <-blk_mq_submit_bio
+kworker/-483592    0....  192us : wbt_wait <-__rq_qos_throttle
+kworker/-483592    0....  192us : bio_to_wbt_flags <-wbt_wait
+kworker/-483592    0....  193us : blkcg_iolatency_throttle <-__rq_qos_throttle
+kworker/-483592    0....  193us : __blk_mq_alloc_request <-blk_mq_submit_bio
+kworker/-483592    0....  193us : blk_mq_get_tag <-__blk_mq_alloc_request
+kworker/-483592    0....  194us : __blk_mq_get_tag <-blk_mq_get_tag
+kworker/-483592    0....  195us : blk_mq_rq_ctx_init <-blk_mq_submit_bio
+kworker/-483592    0....  195us : ktime_get <-blk_mq_rq_ctx_init
+kworker/-483592    0....  196us : __rq_qos_track <-blk_mq_submit_bio
+kworker/-483592    0....  196us : wbt_track <-__rq_qos_track
+kworker/-483592    0....  196us : bio_to_wbt_flags <-wbt_track
+kworker/-483592    0....  197us : blkcg_ioprio_track <-__rq_qos_track
+kworker/-483592    0....  197us : blk_account_io_start <-blk_mq_submit_bio
+kworker/-483592    0....  198us : update_io_ticks <-blk_account_io_start
+kworker/-483592    0....  198us : blk_insert_flush <-blk_mq_submit_bio
+kworker/-483592    0....  199us : _raw_spin_lock_irq <-blk_insert_flush
+kworker/-483592    0d...  199us : blk_flush_complete_seq <-blk_insert_flush
+kworker/-483592    0d...  200us : blk_mq_add_to_requeue_list <-blk_flush_complete_seq
+kworker/-483592    0d...  200us : _raw_spin_lock_irqsave <-blk_mq_add_to_requeue_list
+kworker/-483592    0d...  201us : _raw_spin_unlock_irqrestore <-blk_mq_add_to_requeue_list
+kworker/-483592    0d...  201us : kblockd_mod_delayed_work_on <-blk_flush_complete_seq
+kworker/-483592    0d...  201us : mod_delayed_work_on <-kblockd_mod_delayed_work_on
+kworker/-483592    0d...  202us : try_to_grab_pending <-mod_delayed_work_on
+kworker/-483592    0d...  202us : del_timer <-try_to_grab_pending
+kworker/-483592    0d...  202us : __queue_delayed_work <-mod_delayed_work_on
+kworker/-483592    0d...  203us : __queue_work <-mod_delayed_work_on
+kworker/-483592    0d...  203us : _raw_spin_lock <-__queue_work
+kworker/-483592    0d...  204us : insert_work <-__queue_work
+kworker/-483592    0d...  205us : wake_up_process <-__queue_work
+kworker/-483592    0d...  205us : try_to_wake_up <-__queue_work
+kworker/-483592    0d...  205us : _raw_spin_lock_irqsave <-try_to_wake_up
+kworker/-483592    0d...  206us : _raw_spin_unlock_irqrestore <-try_to_wake_up
+kworker/-483592    0d...  206us : rcu_read_unlock_strict <-mod_delayed_work_on
+kworker/-483592    0....  206us : blk_mq_run_hw_queue <-blk_mq_submit_bio
+kworker/-483592    0....  207us : bfq_has_work <-blk_mq_run_hw_queue
+kworker/-483592    0....  207us : bfq_tot_busy_queues <-bfq_has_work
+kworker/-483592    0....  208us : hctx_unlock <-blk_mq_run_hw_queue
+kworker/-483592    0....  208us : rcu_read_unlock_strict <-blk_mq_run_hw_queue
+kworker/-483592    0....  208us : __blk_mq_delay_run_hw_queue <-blk_mq_submit_bio
+kworker/-483592    0....  209us : __msecs_to_jiffies <-__blk_mq_delay_run_hw_queue
+kworker/-483592    0....  209us : kblockd_mod_delayed_work_on <-blk_mq_submit_bio
+kworker/-483592    0....  209us : mod_delayed_work_on <-kblockd_mod_delayed_work_on
+kworker/-483592    0....  210us : try_to_grab_pending <-mod_delayed_work_on
+kworker/-483592    0d...  210us : del_timer <-try_to_grab_pending
+kworker/-483592    0d...  210us : _raw_spin_lock <-try_to_grab_pending
+kworker/-483592    0d...  211us : pwq_dec_nr_in_flight <-try_to_grab_pending
+kworker/-483592    0d...  211us : rcu_read_unlock_strict <-try_to_grab_pending
+kworker/-483592    0d...  211us : __queue_delayed_work <-mod_delayed_work_on
+kworker/-483592    0d...  212us : __queue_work <-mod_delayed_work_on
+kworker/-483592    0d...  212us : _raw_spin_lock <-__queue_work
+kworker/-483592    0d...  212us : insert_work <-__queue_work
+kworker/-483592    0d...  213us : wake_up_process <-__queue_work
+kworker/-483592    0d...  213us : try_to_wake_up <-__queue_work
+kworker/-483592    0d...  213us : _raw_spin_lock_irqsave <-try_to_wake_up
+kworker/-483592    0d...  214us : _raw_spin_unlock_irqrestore <-try_to_wake_up
+kworker/-483592    0d...  214us : rcu_read_unlock_strict <-mod_delayed_work_on
+kworker/-483592    0....  214us : _raw_spin_lock_irq <-dm_wq_work
+kworker/-483592    0....  215us : __cond_resched <-process_one_work
+kworker/-483592    0....  215us : rcu_all_qs <-__cond_resched
+kworker/-483592    0....  216us : _raw_spin_lock_irq <-process_one_work
+kworker/-483592    0d...  216us : pwq_dec_nr_in_flight <-worker_thread
+kworker/-483592    0d...  217us : worker_enter_idle <-worker_thread
+kworker/-483592    0....  217us : schedule <-worker_thread
+kworker/-483592    0....  218us : wq_worker_sleeping <-schedule
+kworker/-483592    0....  218us : kthread_data <-wq_worker_sleeping
+kworker/-483592    0d...  219us : rcu_note_context_switch <-__schedule
+kworker/-483592    0d...  219us : rcu_qs <-rcu_note_context_switch
+kworker/-483592    0d...  220us : raw_spin_rq_lock_nested <-__schedule
+kworker/-483592    0d...  220us : _raw_spin_lock <-raw_spin_rq_lock_nested
+kworker/-483592    0d...  221us : update_rq_clock <-__schedule
+kworker/-483592    0d...  222us : dequeue_task_fair <-__schedule
+kworker/-483592    0d...  222us : dequeue_entity <-dequeue_task_fair
+kworker/-483592    0d...  222us : update_curr <-dequeue_entity
+kworker/-483592    0d...  223us : update_min_vruntime <-update_curr
+kworker/-483592    0d...  223us : cpuacct_charge <-update_curr
+kworker/-483592    0d...  224us : rcu_read_unlock_strict <-update_curr
+kworker/-483592    0d...  224us : rcu_read_unlock_strict <-update_curr
+kworker/-483592    0d...  225us : __update_load_avg_se <-update_load_avg
+kworker/-483592    0d...  225us : __update_load_avg_cfs_rq <-update_load_avg
+kworker/-483592    0d...  226us : clear_buddies <-dequeue_entity
+kworker/-483592    0d...  226us : update_cfs_group <-dequeue_entity
+kworker/-483592    0d...  226us : update_min_vruntime <-dequeue_task_fair
+kworker/-483592    0d...  227us : hrtick_update <-__schedule
+kworker/-483592    0d...  227us : pick_next_task_fair <-__schedule
+kworker/-483592    0d...  227us : pick_next_entity <-pick_next_task_fair
+kworker/-483592    0d...  228us : put_prev_entity <-pick_next_task_fair
+kworker/-483592    0d...  228us : set_next_entity <-pick_next_task_fair
+kworker/-483592    0d...  229us : clear_buddies <-set_next_entity
+kworker/-483592    0d...  229us : __update_load_avg_se <-update_load_avg
+kworker/-483592    0d...  229us : __update_load_avg_cfs_rq <-update_load_avg
+kworker/-483592    0d...  230us : psi_task_switch <-__schedule
+kworker/-483592    0d...  230us : psi_flags_change <-psi_task_switch
+kworker/-483592    0d...  230us : iterate_groups <-psi_task_switch
+kworker/-483592    0d...  231us : psi_flags_change <-psi_task_switch
+kworker/-483592    0d...  231us : iterate_groups <-psi_task_switch
+kworker/-483592    0d...  232us : psi_group_change <-psi_task_switch
+kworker/-483592    0d...  232us : iterate_groups <-psi_task_switch
+kworker/-483592    0d...  233us : enter_lazy_tlb <-__schedule
+ksoftirq-13        0d...  235us : finish_task_switch.isra.0 <-__schedule
+ksoftirq-13        0d...  235us : raw_spin_rq_unlock <-finish_task_switch.isra.0
+ksoftirq-13        0....  237us : kthread_should_stop <-smpboot_thread_fn
+ksoftirq-13        0....  237us : kthread_should_park <-smpboot_thread_fn
+ksoftirq-13        0....  238us : ksoftirqd_should_run <-smpboot_thread_fn
+ksoftirq-13        0....  238us : run_ksoftirqd <-smpboot_thread_fn
+ksoftirq-13        0d...  239us : __do_softirq <-run_ksoftirqd
+ksoftirq-13        0d.s.  239us : irqtime_account_irq <-__do_softirq
+ksoftirq-13        0..s.  240us : run_rebalance_domains <-__do_softirq
+ksoftirq-13        0..s.  240us : update_blocked_averages <-run_rebalance_domains
+ksoftirq-13        0d.s.  241us : raw_spin_rq_lock_nested <-update_blocked_averages
+ksoftirq-13        0d.s.  241us : _raw_spin_lock <-raw_spin_rq_lock_nested
+ksoftirq-13        0d.s.  241us : update_rq_clock <-update_blocked_averages
+ksoftirq-13        0d.s.  242us : update_rt_rq_load_avg <-update_blocked_averages
+ksoftirq-13        0d.s.  242us : update_dl_rq_load_avg <-update_blocked_averages
+ksoftirq-13        0d.s.  243us : update_irq_load_avg <-update_blocked_averages
+ksoftirq-13        0d.s.  243us : __update_load_avg_cfs_rq <-update_blocked_averages
+ksoftirq-13        0d.s.  244us : __update_load_avg_cfs_rq <-update_blocked_averages
+ksoftirq-13        0d.s.  245us : __update_load_avg_cfs_rq <-update_blocked_averages
+ksoftirq-13        0d.s.  246us : __update_load_avg_cfs_rq <-update_blocked_averages
+ksoftirq-13        0d.s.  247us : __update_load_avg_cfs_rq <-update_blocked_averages
+ksoftirq-13        0d.s.  247us : __update_load_avg_cfs_rq <-update_blocked_averages
+ksoftirq-13        0d.s.  248us : __update_load_avg_cfs_rq <-update_blocked_averages
+ksoftirq-13        0d.s.  249us : sugov_update_single_freq <-update_blocked_averages
+ksoftirq-13        0d.s.  249us : sugov_iowait_boost <-sugov_update_single_freq
+ksoftirq-13        0d.s.  250us : cpufreq_this_cpu_can_update <-sugov_update_single_freq
+ksoftirq-13        0d.s.  250us : sugov_get_util <-sugov_update_single_freq
+ksoftirq-13        0d.s.  250us : effective_cpu_util <-sugov_get_util
+ksoftirq-13        0d.s.  251us : sugov_iowait_apply <-sugov_update_single_freq
+ksoftirq-13        0d.s.  251us : get_next_freq <-sugov_update_single_freq
+ksoftirq-13        0d.s.  251us : cpufreq_driver_resolve_freq <-sugov_update_single_freq
+ksoftirq-13        0d.s.  252us : __resolve_freq <-sugov_update_single_freq
+ksoftirq-13        0d.s.  252us : tick_nohz_get_idle_calls_cpu <-sugov_update_single_freq
+ksoftirq-13        0d.s.  252us : raw_spin_rq_unlock <-update_blocked_averages
+ksoftirq-13        0..s.  253us : rebalance_domains <-__do_softirq
+ksoftirq-13        0..s.  253us : __msecs_to_jiffies <-rebalance_domains
+ksoftirq-13        0..s.  254us : __msecs_to_jiffies <-rebalance_domains
+ksoftirq-13        0..s.  254us : rcu_read_unlock_strict <-rebalance_domains
+ksoftirq-13        0..s.  255us : rcu_softirq_qs <-__do_softirq
+ksoftirq-13        0d.s.  255us : irqtime_account_irq <-__do_softirq
+ksoftirq-13        0....  255us : __cond_resched <-smpboot_thread_fn
+ksoftirq-13        0....  256us : rcu_all_qs <-__cond_resched
+ksoftirq-13        0....  256us : kthread_should_stop <-smpboot_thread_fn
+ksoftirq-13        0....  256us : kthread_should_park <-smpboot_thread_fn
+ksoftirq-13        0....  257us : ksoftirqd_should_run <-smpboot_thread_fn
+ksoftirq-13        0....  257us : schedule <-smpboot_thread_fn
+ksoftirq-13        0d...  258us : rcu_note_context_switch <-__schedule
+ksoftirq-13        0d...  258us : rcu_qs <-rcu_note_context_switch
+ksoftirq-13        0d...  258us : raw_spin_rq_lock_nested <-__schedule
+ksoftirq-13        0d...  259us : _raw_spin_lock <-raw_spin_rq_lock_nested
+ksoftirq-13        0d...  259us : update_rq_clock <-__schedule
+ksoftirq-13        0d...  260us : dequeue_task_fair <-__schedule
+ksoftirq-13        0d...  260us : dequeue_entity <-dequeue_task_fair
+ksoftirq-13        0d...  260us : update_curr <-dequeue_entity
+ksoftirq-13        0d...  260us : update_min_vruntime <-update_curr
+ksoftirq-13        0d...  261us : cpuacct_charge <-update_curr
+ksoftirq-13        0d...  261us : rcu_read_unlock_strict <-update_curr
+ksoftirq-13        0d...  261us : rcu_read_unlock_strict <-update_curr
+ksoftirq-13        0d...  262us : __update_load_avg_se <-update_load_avg
+ksoftirq-13        0d...  262us : __update_load_avg_cfs_rq <-update_load_avg
+ksoftirq-13        0d...  263us : clear_buddies <-dequeue_entity
+ksoftirq-13        0d...  263us : update_cfs_group <-dequeue_entity
+ksoftirq-13        0d...  263us : update_min_vruntime <-dequeue_task_fair
+ksoftirq-13        0d...  263us : hrtick_update <-__schedule
+ksoftirq-13        0d...  264us : pick_next_task_fair <-__schedule
+ksoftirq-13        0d...  264us : pick_next_entity <-pick_next_task_fair
+ksoftirq-13        0d...  264us : put_prev_entity <-pick_next_task_fair
+ksoftirq-13        0d...  265us : set_next_entity <-pick_next_task_fair
+ksoftirq-13        0d...  265us : clear_buddies <-set_next_entity
+ksoftirq-13        0d...  265us : __update_load_avg_se <-update_load_avg
+ksoftirq-13        0d...  266us : __update_load_avg_cfs_rq <-update_load_avg
+ksoftirq-13        0d...  266us : psi_task_switch <-__schedule
+ksoftirq-13        0d...  267us : psi_flags_change <-psi_task_switch
+ksoftirq-13        0d...  267us : iterate_groups <-psi_task_switch
+ksoftirq-13        0d...  268us : psi_flags_change <-psi_task_switch
+ksoftirq-13        0d...  268us : iterate_groups <-psi_task_switch
+ksoftirq-13        0d...  269us : psi_group_change <-psi_task_switch
+ksoftirq-13        0d...  270us : iterate_groups <-psi_task_switch
+ksoftirq-13        0d...  271us : __schedule
+ksoftirq-13        0d...  271us+:       13:120:S ==> [000]     118:100:R kworker/0:1H
+ksoftirq-13        0d...  284us : <stack trace>
+ => __ftrace_trace_stack
+ => probe_wakeup_sched_switch
+ => __schedule
+ => schedule
+ => smpboot_thread_fn
+ => kthread
+ => ret_from_fork

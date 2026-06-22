@@ -1,0 +1,27 @@
+
+
+
+1st Model
+host -------->         embedded system <------------ devices
+                       run GDB natively on target    i2c etc
+
+2nd Model
+host -------->         embedded system <------------ devices
+     builds                                          i2c
+     debug (GDB)       gdbserver                     ..
+     - unstripped      stripped binary
+     - +debug symbols  no symbols
+       (sysroot)
+
+3rd model
+build
+ |
+ |
+ V
+host -------->         embedded system <------------ devices
+                                                     i2c
+     debug (GDB)       gdbserver                     ..
+     - unstripped      stripped binary
+     - +debug symbols  no symbols
+       (sysroot)
+
