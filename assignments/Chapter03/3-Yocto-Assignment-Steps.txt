@@ -1,0 +1,194 @@
+Yocto Project Assignment: Build a Bootable SD Card for Raspberry Pi
+=================================================================
+
+Assignment Objective
+-------------------
+Build a complete Linux system using the Yocto Project build system and create a bootable SD card image for Raspberry Pi. Submit the output of "uname -a" and a screenshot of the booted system.
+
+Step 1: Verify Prerequisites
+----------------------------
+Before starting, verify your build environment has sufficient resources:
+- Disk space: At least 100GB free (Yocto builds are large)
+- RAM: Minimum 8GB, recommended 16GB+ for parallel builds
+- Time: Full build takes 2-6 hours depending on hardware
+
+Step 2: Install Host System Dependencies
+--------------------------------------
+For Ubuntu/Debian:
+sudo apt update
+sudo apt -y install gawk wget git diffstat unzip texinfo gcc-multilib build-essential chrpath cpio python3 python3-pip python3-pexpect python3-jinja2 python3-passlib libsdl1.2-dev libsqlite3-dev mesa-common-dev python-is-python3
+
+For RHEL/CentOS/Fedora:
+sudo dnf -y install gawk make wget tar bzip2 gzip at automake ccache chrpath cpio cpp diffstat diffutils file findutils gcc gcc-c++ git glibc-devel kernel-devel libstdc++-devel lz4 patch texinfo unzip python3 python3-devel python3-pip python3-jinja2 python3-passlib python3-pexpect rpcgen socat sqlite-devel
+
+Step 3: Create Build Directory Structure
+---------------------------------------
+mkdir -p ~/el
+cd ~/el
+
+Step 4: Clone Poky Reference Distribution
+----------------------------------------
+Clone the Yocto Project's poky repository using the latest stable release:
+
+# Fetch latest release codename
+wget -q https://wiki.yoctoproject.org/wiki/Releases
+LatestCodeName=$(sed -e 's/<td>//g' -e 's/<br \/>//g' -e 's/ *<.*> *//g' Releases | egrep -v "^$" | egrep -B 4 "^Support for [0-9]* months" | head -1 | awk '{printf "%s",$1;}' | tr [A-Z] [a-z])
+
+git clone -b $LatestCodeName git://git.yoctoproject.org/poky.git
+cd poky
+
+Step 5: Add Required Layers
+--------------------------
+Add the meta-openembedded and meta-raspberrypi layers:
+
+git clone -b $LatestCodeName git://git.openembedded.org/meta-openembedded
+git clone -b $LatestCodeName git://git.yoctoproject.org/meta-raspberrypi
+
+Required layers:
+- meta-openembedded/meta-oe (essential utilities)
+- meta-openembedded/meta-python (Python packages)
+- meta-openembedded/meta-networking (network tools)
+- meta-openembedded/meta-multimedia (optional: for media applications)
+
+Step 6: Initialize Build Environment
+------------------------------------
+cd ~/el/poky
+source oe-init-build-env build-rpi
+
+This sets up the BitBake build environment and creates a build directory.
+
+Step 7: Configure Target Machine
+--------------------------------
+Edit conf/local.conf to target Raspberry Pi 4 64-bit:
+
+MACHINE = "raspberrypi4-64"
+
+For other targets, use:
+- Raspberry Pi 3: MACHINE = "raspberrypi3"
+- Raspberry Pi 3 64-bit: MACHINE = "raspberrypi3-64"
+- Raspberry Pi 4 (32-bit): MACHINE = "raspberrypi4"
+- Generic ARM: MACHINE = "raspberrypi"
+
+Step 8: Add SSH Server Access
+-----------------------------
+For remote login, enable OpenSSH in your image:
+Add to conf/local.conf:
+EXTRA_IMAGE_FEATURES += "ssh-server-openssh"
+
+Or enable via IMAGE_FEATURES:
+IMAGE_FEATURES += "ssh-server-openssh"
+
+Step 9: Add Build Layers
+------------------------
+In your build directory, register the layers:
+bitbake-layers add-layer ../meta-openembedded/meta-oe
+bitbake-layers add-layer ../meta-openembedded/meta-python
+bitbake-layers add-layer ../meta-openembedded/meta-networking
+bitbake-layers add-layer ../meta-openembedded/meta-multimedia
+bitbake-layers add-layer ../meta-raspberrypi
+
+Verify layers are registered:
+bitbake-layers show-layers
+
+Step 10: Configure Download Cache (Optional but Recommended)
+-----------------------------------------------------------
+To avoid re-downloading sources on rebuilds, add to conf/local.conf:
+DL_DIR = "${HOME}/el/poky/downloads"
+SSTATE_DIR = "${HOME}/el/poky/sstate-cache"
+
+Create directories:
+mkdir -p ~/el/poky/downloads ~/el/poky/sstate-cache
+
+Step 11: Build the Image
+-------------------------
+Start the build process. This will take 2-6 hours for first build:
+
+time bitbake rpi-test-image
+
+Alternative images to consider:
+- core-image-minimal (smaller, faster build)
+- rpi-test-image (includes testing utilities)
+- rpi-basic-image (basic Raspberry Pi image)
+
+The build downloads sources, cross-compiles the toolchain, kernel, and all packages.
+
+Step 12: Locate Built Images
+---------------------------
+After successful build, find your SD card image:
+
+ls -l tmp/deploy/images/${MACHINE}/
+
+Key files produced:
+- *.wic.bz2: Compressed SD card image ready to flash
+- *.wic.xz: Compressed SD card image (XZ format)
+- bootpartition.tar.gz: Boot partition contents
+- *.rootfs.ext4: Root filesystem image
+
+The .wic file is your bootable SD card image.
+
+Step 13: Flash SD Card Using Linux Command Line
+---------------------------------------------
+Insert microSD card into card reader. Identify the device:
+lsblk  # Find the SD card device (e.g., /dev/sdb, /dev/sdc)
+
+Write image to SD card (replace ${MACHINE} and device path):
+bzcat tmp/deploy/images/${MACHINE}/rpi-test-image-${MACHINE}.wic.bz2 | sudo dd of=/dev/sdX bs=4M status=progress conv=fsync
+
+For XZ format:
+xzcat tmp/deploy/images/${MACHINE}/rpi-test-image-${MACHINE}.wic.xz | sudo dd of=/dev/sdX bs=4M status=progress conv=fsync
+
+Ensure all writes complete:
+sync
+
+Step 14: Flash SD Card Using Etcher (GUI Alternative)
+----------------------------------------------------
+1. Insert microSD card into host machine
+2. Launch Etcher
+3. Click "Flash from file" and select the .wic file
+4. Click "Select target" and choose the SD card
+5. Click "Flash" to write the image
+6. Eject SD card when complete
+
+Step 15: Boot and Verify
+------------------------
+1. Insert SD card into Raspberry Pi
+2. Connect HDMI monitor and USB keyboard (optional)
+3. Connect Ethernet cable for network access
+4. Apply power to Raspberry Pi
+
+Login credentials (default):
+- Username: root
+- Password: (no password, or use "root" as password)
+
+Step 16: Verify Boot and Submit
+-------------------------------
+Once booted, verify the system with:
+uname -a
+
+Expected output format:
+Linux raspberrypi4-64 6.x.x-yocto-standard #1 SMP PREEMPT ... aarch64 ...
+
+Submit:
+1. Output of "uname -a"
+2. Screenshot showing successful boot (HDMI monitor or serial console)
+
+Step 17: Troubleshooting Common Issues
+-------------------------------------
+Issue: Build fails with sqlite3 error
+Fix: pip install pysqlite3, then manually patch BitBake files if on Fedora
+
+Issue: Machine not found
+Fix: Verify meta-raspberrypi layer is added and MACHINE name is exact
+
+Issue: No network connectivity
+Fix: Check Ethernet cable; ensure ssh-server-openssh is in IMAGE_FEATURES
+
+Issue: Image too large for SD card
+Fix: Use core-image-minimal or customize IMAGE_INSTALL in local.conf
+
+Assignment Submission Requirements
+-------------------------------
+1. Submit "uname -a" output showing Yocto-built kernel
+2. Submit screenshot of booted system
+3. Document any issues encountered and how you resolved them
+4. List the machine configuration used (rpi4-64, rpi3, etc.)
